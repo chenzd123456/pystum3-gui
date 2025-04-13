@@ -87,7 +87,7 @@ class StunGUI(BoxLayout):
         self.running = False
         self.start_btn.disabled = False
         self.stop_btn.disabled = True
-        self.result_output.text += '\n检测已停止'
+        self.result_output.text += '\ncheck stoped'
     
     def run_stun(self, host, port):
         try:
