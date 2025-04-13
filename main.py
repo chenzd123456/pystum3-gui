@@ -8,6 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 import threading
 import stun
+import json
 
 class StunGUI(BoxLayout):
     def __init__(self, **kwargs):
@@ -35,11 +36,21 @@ class StunGUI(BoxLayout):
         # Server configuration area
         self.config_box = BoxLayout(size_hint=(1, 0.2), spacing=10)
         
+        # Load default config
+        try:
+            with open('config.json') as f:
+                config = json.load(f)
+                default_host = config['stun_server']['host']
+                default_port = str(config['stun_server']['port'])
+        except (FileNotFoundError, KeyError):
+            default_host = 'stun.l.google.com'
+            default_port = '19302'
+
         # Host input
         host_box = BoxLayout(size_hint=(0.5, 1))
         host_box.add_widget(Label(text='Host:'))
         self.host_input = TextInput(
-            text='stun.l.google.com',
+            text=default_host,
             multiline=False
         )
         host_box.add_widget(self.host_input)
@@ -48,7 +59,7 @@ class StunGUI(BoxLayout):
         port_box = BoxLayout(size_hint=(0.5, 1))
         port_box.add_widget(Label(text='Port:'))
         self.port_input = TextInput(
-            text='19302',
+            text=default_port,
             multiline=False,
             input_filter='int'
         )

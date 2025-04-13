@@ -1,0 +1,6 @@
+{
+    "stun_server": {
+        "host": "stun.l.google.com",
+        "port": 19302
+    }
+}
