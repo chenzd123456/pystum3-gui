@@ -1,6 +1,14 @@
 {
-    "stun_server": {
-        "host": "stun.l.google.com",
-        "port": 19302
-    }
+    "stun_servers": [
+        {
+            "name": "Google STUN",
+            "host": "stun.l.google.com",
+            "port": 19302
+        },
+        {
+            "name": "Twilio STUN",
+            "host": "global.stun.twilio.com", 
+            "port": 3478
+        }
+    ]
 }

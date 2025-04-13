@@ -6,6 +6,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from kivy.uix.spinner import Spinner
 import threading
 import stun
 import json
@@ -46,27 +47,49 @@ class StunGUI(BoxLayout):
             default_host = 'stun.l.google.com'
             default_port = '19302'
 
-        # Host input
-        host_box = BoxLayout(size_hint=(0.5, 1))
-        host_box.add_widget(Label(text='Host:'))
-        self.host_input = TextInput(
-            text=default_host,
-            multiline=False
-        )
-        host_box.add_widget(self.host_input)
+        # Define available STUN servers
+        self.servers = [
+            {'name': 'Google STUN', 'host': 'stun.l.google.com', 'port': 19302},
+            {'name': 'Mozilla STUN', 'host': 'stun.services.mozilla.com', 'port': 3478},
+            {'name': 'Twilio STUN', 'host': 'global.stun.twilio.com', 'port': 3478}
+        ]
         
-        # Port input
-        port_box = BoxLayout(size_hint=(0.5, 1))
-        port_box.add_widget(Label(text='Port:'))
-        self.port_input = TextInput(
-            text=default_port,
-            multiline=False,
-            input_filter='int'
-        )
-        port_box.add_widget(self.port_input)
+        # Server selection and info display
+        server_info_layout = BoxLayout(orientation='vertical', spacing=5)
         
-        self.config_box.add_widget(host_box)
-        self.config_box.add_widget(port_box)
+        # Server selection row
+        server_row = BoxLayout(size_hint=(1, None), height=40)
+        server_row.add_widget(Label(text='Server:'))
+        self.server_spinner = Spinner(
+            text='Select Server',
+            values=[s['name'] for s in self.servers],
+            size_hint=(0.7, 1)
+        )
+        server_row.add_widget(self.server_spinner)
+        server_info_layout.add_widget(server_row)
+        
+        # Server info display row
+        info_row = BoxLayout(size_hint=(1, None), height=40)
+        self.host_label = Label(text='Host: ')
+        self.port_label = Label(text='Port: ')
+        info_row.add_widget(self.host_label)
+        info_row.add_widget(self.port_label)
+        server_info_layout.add_widget(info_row)
+        
+        # Update displayed host/port when server changes
+        def update_server(instance, value):
+            selected = next(s for s in self.servers 
+                          if s['name'] == value)
+            self.host_label.text = f'Host: {selected["host"]}'
+            self.port_label.text = f'Port: {selected["port"]}'
+            
+        self.server_spinner.bind(text=update_server)
+        # Initialize with first server
+        self.server_spinner.text = self.servers[0]['name']
+        update_server(self.server_spinner, self.servers[0]['name'])
+        
+        # Add to main config box
+        self.config_box.add_widget(server_info_layout)
         
         self.add_widget(self.control_box)
         self.add_widget(self.result_output)
@@ -81,11 +104,10 @@ class StunGUI(BoxLayout):
         self.stop_btn.disabled = False
         self.result_output.text = 'Detecting NAT type and public IP...'
         
-        host = self.host_input.text.strip()
-        try:
-            port = int(self.port_input.text.strip())
-        except ValueError:
-            port = 3478
+        selected = next(s for s in self.servers 
+                      if s['name'] == self.server_spinner.text)
+        host = selected['host']
+        port = selected['port']
         
         self.stun_thread = threading.Thread(
             target=self.run_stun,
