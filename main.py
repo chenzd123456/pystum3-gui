@@ -32,14 +32,30 @@ class StunGUI(BoxLayout):
             size_hint=(1, 0.7)
         )
         
-        # 服务器配置区域
-        self.config_box = BoxLayout(size_hint=(1, 0.2))
-        self.config_box.add_widget(Label(text='STUN Server:'))
-        self.server_input = TextInput(
-            text='stun.l.google.com:19302',
+        # Server configuration area
+        self.config_box = BoxLayout(size_hint=(1, 0.2), spacing=10)
+        
+        # Host input
+        host_box = BoxLayout(size_hint=(0.5, 1))
+        host_box.add_widget(Label(text='Host:'))
+        self.host_input = TextInput(
+            text='stun.l.google.com',
             multiline=False
         )
-        self.config_box.add_widget(self.server_input)
+        host_box.add_widget(self.host_input)
+        
+        # Port input
+        port_box = BoxLayout(size_hint=(0.5, 1))
+        port_box.add_widget(Label(text='Port:'))
+        self.port_input = TextInput(
+            text='19302',
+            multiline=False,
+            input_filter='int'
+        )
+        port_box.add_widget(self.port_input)
+        
+        self.config_box.add_widget(host_box)
+        self.config_box.add_widget(port_box)
         
         self.add_widget(self.control_box)
         self.add_widget(self.result_output)
@@ -54,9 +70,11 @@ class StunGUI(BoxLayout):
         self.stop_btn.disabled = False
         self.result_output.text = 'Detecting NAT type and public IP...'
         
-        server = self.server_input.text.strip()
-        host, _, port = server.partition(':')
-        port = int(port) if port else 3478
+        host = self.host_input.text.strip()
+        try:
+            port = int(self.port_input.text.strip())
+        except ValueError:
+            port = 3478
         
         self.stun_thread = threading.Thread(
             target=self.run_stun,
