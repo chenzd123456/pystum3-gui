@@ -1,0 +1,15 @@
+[project]
+name = "pystum3-gui"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "kivy>=2.3.1",
+    "pystun3>=2.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pyinstall>=0.1.4",
+]
