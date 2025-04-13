@@ -48,11 +48,7 @@ class StunGUI(BoxLayout):
             default_port = '19302'
 
         # Define available STUN servers
-        self.servers = [
-            {'name': 'Google STUN', 'host': 'stun.l.google.com', 'port': 19302},
-            {'name': 'Mozilla STUN', 'host': 'stun.services.mozilla.com', 'port': 3478},
-            {'name': 'Twilio STUN', 'host': 'global.stun.twilio.com', 'port': 3478}
-        ]
+        self.servers = config.get('stun_servers', [])
         
         # Server selection and info display
         server_info_layout = BoxLayout(orientation='vertical', spacing=5)
