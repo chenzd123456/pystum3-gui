@@ -177,7 +177,7 @@ Server: {host}:{port}
 
 class StunApp(App):
     def build(self):
-        self.title = 'STUN Checker'
+        self.title = 'Pystun GUI'
         # 添加移动端配置
         from kivy.config import Config
         Config.set('kivy', 'exit_on_escape', '0')
