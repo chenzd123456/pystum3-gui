@@ -69,6 +69,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install cython==0.29.36 buildozer
         
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v4
+      with:
+        cmdline-tools-version: "latest"
+        build-tools-version: "34.0.0"
+        platform-version: "android-34"
+        ndk-version: "25.2.9519653"
+        cmake-version: "3.22.1"
+        
     - name: Configure Buildozer
       run: |
         buildozer init
