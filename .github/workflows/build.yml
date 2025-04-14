@@ -19,14 +19,15 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
-    
-    - name: Install build tools
+
+    - name: Install dependencies
       run: |
-        pip install pyinstaller
+        python -m pip install uv
+        uv sync
         
     - name: Build executable
       run: |
-        pyinstaller --onefile --name pystum3-gui --window --add-data config.json:config.json main.py
+        uv run pyinstaller --onefile --name pystum3-gui --window --add-data config.json:config.json main.py
       env:
         KIVY_NO_ARGS: 1
         
