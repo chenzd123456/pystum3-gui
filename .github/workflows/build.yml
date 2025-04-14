@@ -27,12 +27,12 @@ jobs:
         
     - name: Build executable
       run: |
-        uv run pyinstaller --onefile --name pystum3-gui --window --add-data config.json:config.json main.py
+        pyinstaller --onefile --name pystum3-gui --window --add-data config.json:config.json main.py
       env:
         KIVY_NO_ARGS: 1
         
     - name: Upload executable
       uses: actions/upload-artifact@v4
       with:
-        name: pystum3-gui-${{ matrix.os }}
+        name: pystun3-gui-${{ matrix.os }}
         path: dist/*

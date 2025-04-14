@@ -1,21 +1,15 @@
 [project]
 name = "pystum3-gui"
 version = "0.1.0"
-description = "STUN Checker GUI Application"
+description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "kivy>=2.3.1",
+    "Gooey>=1.0.8",
     "pystun3>=2.0.0",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.1.1",
-    "pyinstaller>=6.7.0",
-    "buildozer>=1.5.0",
-    "cython>=0.29.36",
+    "pyinstaller>=6.12.0",
 ]
-
-[project.scripts]
-pystum3-gui = "main:main"
