@@ -29,6 +29,12 @@ jobs:
         pyinstaller --onefile --name stun-checker main.py
       env:
         KIVY_NO_ARGS: 1
+        
+    - name: Upload executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: stun-checker-${{ matrix.os }}
+        path: dist/*
 
   android:
     runs-on: ubuntu-latest
@@ -80,3 +86,9 @@ jobs:
     - name: Build Android APK
       run: |
         buildozer -v android debug
+        
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: stun-checker-android
+        path: bin/*.apk
