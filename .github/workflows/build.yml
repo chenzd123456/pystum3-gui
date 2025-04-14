@@ -26,12 +26,12 @@ jobs:
         
     - name: Build executable
       run: |
-        pyinstaller --onefile --name pystun-gui --window main.py
+        pyinstaller --onefile --name pystum3-gui --window --add-data config.json:config.json main.py
       env:
         KIVY_NO_ARGS: 1
         
     - name: Upload executable
       uses: actions/upload-artifact@v4
       with:
-        name: stun-checker-${{ matrix.os }}
+        name: pystum3-gui-${{ matrix.os }}
         path: dist/*
