@@ -6,8 +6,8 @@
             "port": 19302
         },
         {
-            "name": "Twilio STUN",
-            "host": "global.stun.twilio.com", 
+            "name": "XIAOMI STUN",
+            "host": "stun.miwifi.com", 
             "port": 3478
         }
     ]
