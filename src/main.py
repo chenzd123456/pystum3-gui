@@ -10,6 +10,7 @@ from kivy.uix.spinner import Spinner
 import threading
 import stun
 import json
+import os
 
 class StunGUI(BoxLayout):
     def __init__(self, **kwargs):
@@ -48,26 +49,13 @@ class StunGUI(BoxLayout):
         
         # Server configuration area - 调整为更适合移动设备
         self.config_box = BoxLayout(size_hint=(1, None), height='120dp', spacing='10dp')
+
+        config_path = os.path.join('data', 'config.json')
         
-        # Load default config
-        try:
-            import sys
-            import os
-            if getattr(sys, 'frozen', False):
-                # 打包后运行
-                base_path = sys._MEIPASS
-                config_path = os.path.join(base_path, 'config.json')
-            else:
-                # 开发环境运行
-                config_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'config.json')
-            
-            with open(config_path) as f:
-                config = json.load(f)
-                default_host = config['stun_server']['host']
-                default_port = str(config['stun_server']['port'])
-        except (FileNotFoundError, KeyError):
-            default_host = 'stun.l.google.com'
-            default_port = '19302'
+        with open(config_path) as f:
+            config = json.load(f)
+            default_host = config['stun_servers'][0]['host']
+            default_port = str(config['stun_servers'][0]['port'])
 
         # Define available STUN servers
         self.servers = config.get('stun_servers', [])
