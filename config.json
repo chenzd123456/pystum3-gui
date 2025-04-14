@@ -1,14 +1,14 @@
 {
-    "stun_servers": [
-        {
-            "name": "Google STUN",
-            "host": "stun.l.google.com",
-            "port": 19302
-        },
-        {
-            "name": "XIAOMI STUN",
-            "host": "stun.miwifi.com", 
-            "port": 3478
-        }
-    ]
+  "stun_servers": [
+    {
+      "name": "XIAOMI STUN",
+      "host": "stun.miwifi.com",
+      "port": 3478
+    },
+    {
+      "name": "Google STUN",
+      "host": "stun.l.google.com",
+      "port": 19302
+    }
+  ]
 }
