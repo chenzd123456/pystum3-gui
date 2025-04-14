@@ -51,7 +51,17 @@ class StunGUI(BoxLayout):
         
         # Load default config
         try:
-            with open('config.json') as f:
+            import sys
+            import os
+            if getattr(sys, 'frozen', False):
+                # 打包后运行
+                base_path = sys._MEIPASS
+                config_path = os.path.join(base_path, 'config.json')
+            else:
+                # 开发环境运行
+                config_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'config.json')
+            
+            with open(config_path) as f:
                 config = json.load(f)
                 default_host = config['stun_server']['host']
                 default_port = str(config['stun_server']['port'])
