@@ -1,7 +1,7 @@
 [project]
 name = "pystum3-gui"
 version = "0.1.0"
-description = "Add your description here"
+description = "STUN Checker GUI Application"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -11,5 +11,11 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "pyinstall>=0.1.4",
+    "pytest>=8.1.1",
+    "pyinstaller>=6.7.0",
+    "buildozer>=1.5.0",
+    "cython>=0.29.36",
 ]
+
+[project.scripts]
+stun-checker = "main:main"

@@ -15,27 +15,39 @@ class StunGUI(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
-        self.padding = 10
-        self.spacing = 10
+        self.padding = '15dp'
+        self.spacing = '15dp'
         
-        # 控制按钮区域
-        self.control_box = BoxLayout(size_hint=(1, 0.1))
-        self.start_btn = Button(text='start check nat')
+        # 控制按钮区域 - 调整为更适合触摸的尺寸
+        self.control_box = BoxLayout(size_hint=(1, None), height='80dp')
+        self.start_btn = Button(
+            text='Start Check NAT',
+            size_hint=(0.5, 1),
+            font_size='18sp'
+        )
         self.start_btn.bind(on_press=self.start_stun)
-        self.stop_btn = Button(text='stop', disabled=True)
+        self.stop_btn = Button(
+            text='Stop', 
+            disabled=True,
+            size_hint=(0.5, 1),
+            font_size='18sp'
+        )
         self.stop_btn.bind(on_press=self.stop_stun)
         self.control_box.add_widget(self.start_btn)
         self.control_box.add_widget(self.stop_btn)
         
-        # 结果显示区域
+        # 结果显示区域 - 增加字体大小和行距
         self.result_output = TextInput(
             text='STUN test results will appear here...',
             readonly=True,
-            size_hint=(1, 0.7)
+            size_hint=(1, 0.6),
+            font_size='16sp',
+            line_height=1.5,
+            background_color=(0.95, 0.95, 0.95, 1)
         )
         
-        # Server configuration area
-        self.config_box = BoxLayout(size_hint=(1, 0.2), spacing=10)
+        # Server configuration area - 调整为更适合移动设备
+        self.config_box = BoxLayout(size_hint=(1, None), height='120dp', spacing='10dp')
         
         # Load default config
         try:
@@ -50,24 +62,25 @@ class StunGUI(BoxLayout):
         # Define available STUN servers
         self.servers = config.get('stun_servers', [])
         
-        # Server selection and info display
-        server_info_layout = BoxLayout(orientation='vertical', spacing=5)
+        # Server selection and info display - 调整为移动友好布局
+        server_info_layout = BoxLayout(orientation='vertical', spacing='5dp')
         
-        # Server selection row
-        server_row = BoxLayout(size_hint=(1, None), height=40)
-        server_row.add_widget(Label(text='Server:'))
+        # Server selection row - 增加字体大小和高度
+        server_row = BoxLayout(size_hint=(1, None), height='50dp')
+        server_row.add_widget(Label(text='Server:', font_size='16sp'))
         self.server_spinner = Spinner(
             text='Select Server',
             values=[s['name'] for s in self.servers],
-            size_hint=(0.7, 1)
+            size_hint=(0.7, 1),
+            font_size='16sp'
         )
         server_row.add_widget(self.server_spinner)
         server_info_layout.add_widget(server_row)
         
-        # Server info display row
-        info_row = BoxLayout(size_hint=(1, None), height=40)
-        self.host_label = Label(text='Host: ')
-        self.port_label = Label(text='Port: ')
+        # Server info display row - 增加字体大小
+        info_row = BoxLayout(size_hint=(1, None), height='50dp')
+        self.host_label = Label(text='Host: ', font_size='16sp')
+        self.port_label = Label(text='Port: ', font_size='16sp')
         info_row.add_widget(self.host_label)
         info_row.add_widget(self.port_label)
         server_info_layout.add_widget(info_row)
@@ -164,7 +177,13 @@ Server: {host}:{port}
 
 class StunApp(App):
     def build(self):
-        self.title = 'stun GUI'
+        self.title = 'STUN Checker'
+        # 添加移动端配置
+        from kivy.config import Config
+        Config.set('kivy', 'exit_on_escape', '0')
+        Config.set('graphics', 'resizable', '0')
+        Config.set('graphics', 'width', '360')
+        Config.set('graphics', 'height', '640')
         return StunGUI()
 
 if __name__ == '__main__':
