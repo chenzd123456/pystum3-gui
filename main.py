@@ -114,9 +114,23 @@ class StunGUI(BoxLayout):
     
     def stop_stun(self, instance):
         self.running = False
+        if self.stun_thread and self.stun_thread.is_alive():
+            # 强制终止线程
+            import ctypes
+            import inspect
+            
+            try:
+                tid = ctypes.c_long(self.stun_thread.ident)
+                exc = ctypes.py_object(SystemExit)
+                ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, exc)
+            except:
+                pass
+            
+            self.stun_thread = None
+            
         self.start_btn.disabled = False
         self.stop_btn.disabled = True
-        self.result_output.text += '\ncheck stoped'
+        self.result_output.text += '\nstoped!'
     
     def run_stun(self, host, port):
         try:
